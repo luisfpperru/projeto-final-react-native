@@ -1,13 +1,47 @@
-import React from 'react';
-import { Text, View, Button, Image,StyleSheet, TextInput,TouchableOpacity } from 'react-native';
+import React, {useEffect} from 'react';
+import { Text, View, Image,StyleSheet, TextInput,TouchableOpacity } from 'react-native';
+import { useForm } from 'react-hook-form';
+import * as yup from "yup";
 
 export default function Login({navigation}){
+
+  const { register, setValue, handleSubmit, error } = useForm({ validationSchema: fieldsValidationSchema })
+
+  useEffect(() => {
+    register('email')
+    register('senha')
+  }, [register]);
+
+  const onSubmit = (data) => alert("Usuário com email"+data.email+" cadastrado!")
+
+  const fieldsValidationSchema = yup.object().shape({
+    email: yup
+    .string()
+    .required('O email não pode ser vazio')
+    .email('Digite um email válido'),
+    senha: yup
+    .string()
+    .required('A senha não pode ser vazia')
+    .min(6, 'A senha deve conter pelo menos 6 dígitos')
+  })
+
   return(
     <View style={styles.container}>
       <Image source={require('../assets/logo.png')} style={styles.logo}/>
-      <TextInput style={styles.campo} placeholder='email'/>
-      <TextInput style={styles.campo} placeholder='senha' secureTextEntry/>
-      <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('Home')}>
+      <TextInput 
+      style={styles.campo} 
+      placeholder='email'
+      error={error.email}
+      onChangeText={texto => setValue('email', texto)}
+      />
+      <TextInput 
+      style={styles.campo} 
+      placeholder='senha'
+      error={error.senha}
+      onChangeText={texto => setValue('senha', texto)}
+      secureTextEntry/>
+      {error.senha && <Text> Esse campo é obrigatório! </Text>}
+      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={{color:'white',fontSize:18,textAlign:'center'}}> login </Text>
       </TouchableOpacity>
 
