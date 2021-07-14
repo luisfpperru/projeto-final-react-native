@@ -9,13 +9,12 @@ export default function TelaInicial({navigation}){
         <Text style={styles.texto}>A loja numero 1 dos ratões da tecnologia!</Text>
         <Text style={styles.texto}>Promoções todos os dias</Text>
         <View style={styles.buttons}>
-        <br/>
         <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('Home')}>
-        <Text style={{color:'white',fontSize:18}}> login </Text>
+        <Text style={{color:'white',fontSize:18,textAlign:'center'}}> login </Text>
       </TouchableOpacity>
 
        <TouchableOpacity style={styles.button2} onPress={()=> navigation.navigate('Home')}>
-        <Text style={{color:'#002035',fontSize:18}}> cadastrar-se </Text>
+        <Text style={{color:'#002035',fontSize:18,textAlign:'center'}}> cadastrar-se </Text>
       </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
   },
   buttons:{
     margin:10,
-    textAlign: 'center',
+    alignItems: 'center',
   },
    button:{
     borderRadius:20,
@@ -57,7 +56,6 @@ const styles = StyleSheet.create({
     backgroundColor:'#002035',
     width:250,
     padding:5,
-    textAlign:'center',
     margin:5,
   },
    button2:{
@@ -66,7 +64,6 @@ const styles = StyleSheet.create({
     backgroundColor:'#1da1f3',
     width:180,
     padding:5,
-    textAlign:'center',
     margin:5,
   },
 })

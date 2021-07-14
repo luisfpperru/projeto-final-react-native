@@ -8,11 +8,11 @@ export default function Login({navigation}){
       <TextInput style={styles.campo} placeholder='email'/>
       <TextInput style={styles.campo} placeholder='senha' secureTextEntry/>
       <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('Home')}>
-        <Text style={{color:'white',fontSize:18}}> login </Text>
+        <Text style={{color:'white',fontSize:18,textAlign:'center'}}> login </Text>
       </TouchableOpacity>
 
        <TouchableOpacity style={styles.button2} onPress={()=> navigation.navigate('Home')}>
-        <Text style={{color:'#002035',fontSize:18}}> cadastrar-se </Text>
+        <Text style={{color:'#002035',fontSize:18,textAlign:'center'}}> cadastrar-se </Text>
       </TouchableOpacity>
     </View>
   )

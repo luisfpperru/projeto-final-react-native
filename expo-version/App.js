@@ -8,7 +8,7 @@ import TelaInicial from './screens/TelaInicial'
 
 export default function App(){
   return (
-   <Produtos/>
+   <BottomTab/>
   );
 }
 

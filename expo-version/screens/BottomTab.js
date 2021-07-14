@@ -5,6 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './Home';
 import MeuPerfil from './MeuPerfil';
 import Login from './Login'
+import TelaInicial from './TelaInicial'
+import Produtos from './Produtos'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Entypo } from '@expo/vector-icons'; 
 
@@ -31,7 +33,7 @@ export default function BottomTab() {
           ),
         }}
       />
-      <Tab.Screen name='Home' component={Home} options={{
+      <Tab.Screen name='TelaInicial' component={TelaInicial} options={{
           tabBarLabel: 'home',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
@@ -42,6 +44,14 @@ export default function BottomTab() {
           tabBarLabel: 'meu perfil',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+
+      <Tab.Screen name='Produtos' component={Produtos} options={{
+          tabBarLabel: 'produtos',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="cart" color={color} size={size} />
           ),
         }}
       />
