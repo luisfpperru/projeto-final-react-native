@@ -9,7 +9,7 @@ export default function TelaInicial({navigation}){
         <Text style={styles.texto}>A loja numero 1 dos ratões da tecnologia!</Text>
         <Text style={styles.texto}>Promoções todos os dias</Text>
         <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('Home')}>
+        <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('Login')}>
         <Text style={{color:'white',fontSize:18,textAlign:'center'}}> login </Text>
       </TouchableOpacity>
 
