@@ -5,53 +5,78 @@ import React, {
 import {
   View,
   ScrollView,
-  ActivityIndicator
+  TouchableOpacity,
+  TextInput,
+  Text,
+  Alert,
 } from 'react-native';
 import Produto from '../components/Produto';
-import api from '../services/api';
+import axios from 'axios';
+import api from '../services/api'
 
 export default function Produtos({
   navigation
 }) {
 
   const [produtos, setProdutos] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [nome,setNome] = useState('');
+  const [quantidade,setQuantidade] = useState('');
+  const [preco,setPreco] = useState('');
+  const [descricao,setDescricao] = useState('');
 
   useEffect(() => {
     getProdutos();
   }, []);
 
   const getProdutos = () => {
-    setIsLoading(true);
     api.get('/produtos')
       .then(
         (response) => {
           setProdutos(response.data);
-          setIsLoading(false);
         }).catch((error) => {
         console.log(error);
-        setIsLoading(false);
+      });
+  }
+
+  const insertProduto = (nome,quantidade,preco) => {
+   const produto = {
+     nome: nome,
+     quantidadeEmEstoque: quantidade,
+     preco: preco,
+     descricao: "",
+   };
+   api.post('/produtos',produto)
+      .then(
+        (response) => {
+          setProdutos([...produtos,produto]);
+          Alert.alert('Produto adicionado!')
+        }).catch((error) => {
+          Alert.alert('Falha ao adicionar produto!')
       });
   }
 
   return ( 
-    <View>
+    <View style={{marginTop:30,flex:1,alignItems:'center',justifyContent:'center'}}>
+      <TextInput onTextChange={(texto)=> setNome(texto) } placeholder='Nome'/>
+      <TextInput onTextChange={(texto)=> setQuantidade(texto) } placeholder='Quantidade'/>
+      <TextInput onTextChange={(texto)=> setPreco(texto) } placeholder='Preço'/>
+      <TextInput onTextChange={(texto)=> setDescricao(texto) } placeholder='Descrição'/>
     <ScrollView> 
-      {(isLoading) ?
-      <View >
-      <ActivityIndicator size = 'large' color = '#999' />
-      </View> 
-      :
-        produtos.map(
-          (produto) => {
+      <TouchableOpacity onPress={() => insertProduto(nome,quantidade,preco)}>
+        <View style={{backgroundColor:'pink'}}>
+        <Text> Benção da Maria </Text>
+        </View>
+      </TouchableOpacity>
+     {produtos.map(
+          (produto) => (
             <Produto
             nome = {produto.nome}
-            preco = {produto.preco}
-            quantidade = {produto.quantidadeEmEstoque}
+            preco = {produto.preco.toString()}
+            quantidade = {produto.quantidadeEmEstoque.toString()}
             />
-          })
-        } 
-        </ScrollView> 
-        </View>
+          ))
+      } 
+      </ScrollView> 
+      </View>
     )
   }
