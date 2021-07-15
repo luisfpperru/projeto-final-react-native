@@ -1,21 +1,17 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from './Home';
-import MeuPerfil from './MeuPerfil';
-import Login from './Login'
-import TelaInicial from './TelaInicial'
-import Produtos from './Produtos'
+import MeuPerfil from '../screens/MeuPerfil';
+import Login from '../screens/Login'
+import TelaInicial from '../screens/TelaInicial'
+import Produtos from '../screens/Produtos'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Entypo } from '@expo/vector-icons'; 
 
 
 const Tab = createBottomTabNavigator();
 
-export default function BottomTab() {
+export default function AppRoutes() {
   return (
-    <NavigationContainer>
     <Tab.Navigator tabBarOptions={
       {
 		  activeTintColor: '#1da1f3',
@@ -56,6 +52,5 @@ export default function BottomTab() {
         }}
       />
     </Tab.Navigator>
-  </NavigationContainer>
   );
 }

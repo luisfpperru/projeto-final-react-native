@@ -31,16 +31,15 @@ export default function Login({navigation}){
       <TextInput 
       style={styles.campo} 
       placeholder='email'
-      error={error.email}
+      error={error?.email}
       onChangeText={texto => setValue('email', texto)}
       />
       <TextInput 
       style={styles.campo} 
       placeholder='senha'
-      error={error.senha}
+      error={error?.senha}
       onChangeText={texto => setValue('senha', texto)}
       secureTextEntry/>
-      {error.senha && <Text> Esse campo é obrigatório! </Text>}
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={{color:'white',fontSize:18,textAlign:'center'}}> login </Text>
       </TouchableOpacity>

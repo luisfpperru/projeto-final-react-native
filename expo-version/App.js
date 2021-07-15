@@ -1,14 +1,12 @@
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import BottomTab from './screens/BottomTab';
-import Home from './screens/Home';
-import MeuPerfil from './screens/MeuPerfil';
-import Login from './screens/Login'
-import Produtos from './screens/Produtos'
-import TelaInicial from './screens/TelaInicial'
+import Routes from './routes';
 
-export default function App(){
+export default function App() {
   return (
-   <BottomTab/>
+    <NavigationContainer>
+        <Routes />
+    </NavigationContainer>
   );
 }
-

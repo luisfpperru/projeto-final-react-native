@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import { Text, View, Button, Image } from 'react-native';
+import { Text, View, Image } from 'react-native';
 
-export default function Produto({navigation}){
+export default function Produto({nome,quantidade,preco}){
   return(
     <View style={styles.pagina}>
       <View  style={styles.container}>
@@ -11,12 +11,12 @@ export default function Produto({navigation}){
           <View style={styles.imagemBackground}>
           <Image
           style={styles.imagemProduto}
-          source={require('../assets/template_image.png')}/>
+          source={require(`../assets/template_image.png`)}/>
           </View>
-          <Text style={styles.titleProduto}>Nome do Produto</Text>
+          <Text style={styles.titleProduto}>{nome}</Text>
         <View style={styles.detailsProduto}>
-          <Text style={styles.estoque}>Em Estoque : 5</Text>
-          <Text style={styles.preco}>R$ 300,00</Text>
+          <Text style={styles.quantidade}>Em Estoque : {quantidade}</Text>
+          <Text style={styles.preco}>R$ {preco}</Text>
         </View>
       </View>
     </View>
