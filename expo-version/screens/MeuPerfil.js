@@ -1,34 +1,22 @@
 import React, {useState,useEffect} from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons, Entypo, Foundation   } from '@expo/vector-icons'; 
-import axios from 'axios';
+import api from '../services/api';
 
 export default function MeuPerfil({navigation}){
-  const [nome, setNome] = useState('');
-  const [endereco, setEndereco] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [email, setEmail] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [nascimento, setNascimento] = useState('');
+  const [cliente, setCliente] = useState([]);
 
   useEffect(() => {
     getCliente();
   }, []);
 
   const getCliente = () => {
-    axios.get('http://localhost:8080/api/clientes/id/5')
+    api.get('/clientes/id/5')
       .then(
         (response) => {
-          let cliente = response.data;
-          setNome(cliente.nome);
-          setEndereco(cliente.endereco.rua);
-          setTelefone(cliente.telefone);
-          setEmail(cliente.email);
-          setCpf(cliente.cpfOuCnpf);
-          setNascimento(cliente.dataDeNascimento.toISOString().substring(0,10));
-          console.log('Dados cliente');
+          setCliente(response.data);
         }).catch((error) => {
-        console.log(error);
+        Alert.alert("Cliente não encontrado!");
       });
   }
 
@@ -36,27 +24,30 @@ export default function MeuPerfil({navigation}){
     <View style={styles.container}>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Ionicons name="person" size={15} color="#6b6b6b" /> Nome</Text>
-        <Text style={styles.dados}>{nome}</Text>
+        <Text style={styles.dados}>{cliente.nome}</Text>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="address" size={15} color="#6b6b6b" /> Endereço</Text>
-        <Text style={styles.dados}>{endereco}</Text>
+        <Text style={styles.dados}>
+          {//`${cliente.endereco.rua}, ${cliente.endereco.numero}, ${cliente.endereco.bairro}, ${cliente.endereco.cidade}, ${cliente.endereco.estado}`
+          }
+        </Text>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Foundation name="telephone" size={15} color="#6b6b6b" /> Telefone</Text>
-        <Text style={styles.dados}>{telefone}</Text>
+        <Text style={styles.dados}>{cliente.telefone}</Text>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="email" size={15} color="#6b6b6b" /> email</Text>
-        <Text style={styles.dados}>{email}</Text>
+        <Text style={styles.dados}>{cliente.email}</Text>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="text-document-inverted" size={15} color="#6b6b6b" /> CPF</Text>
-        <Text style={styles.dados}>{cpf}</Text>
+        <Text style={styles.dados}>{cliente.cpfOuCnpj}</Text>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="calendar" size={15} color="#6b6b6b" /> Data de Nascimento</Text>
-        <Text style={styles.dados}>{nascimento}</Text>
+        <Text style={styles.dados}>{cliente.dataDeNascimento.substring(0,10)}</Text>
       </View>
       {/* <Button title="Ir para Home" onPress={()=> navigation.navigate('TelaInicial')}/> */}
       <TouchableOpacity style={styles.button2} onPress={()=> navigation.navigate('Home')}>
