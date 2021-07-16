@@ -8,17 +8,15 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Button,
   Text,
   Alert,
-  Modal,
   StyleSheet,
 } from 'react-native';
 import Produto from '../components/Produto';
-import axios from 'axios';
 import api from '../services/api'
 import { Modalize } from 'react-native-modalize';
-import { Ionicons, Entypo, Foundation   } from '@expo/vector-icons'; 
+import { Entypo, Foundation,FontAwesome5,SimpleLineIcons } from '@expo/vector-icons'; 
+import { FAB } from 'react-native-paper';
 
 
 export default function Produtos({
@@ -26,10 +24,6 @@ export default function Produtos({
 }) {
 
   const [produtos, setProdutos] = useState([]);
-  const [nome,setNome] = useState('');
-  const [quantidade,setQuantidade] = useState('');
-  const [preco,setPreco] = useState('');
-  const [descricao,setDescricao] = useState('');
 
   useEffect(() => {
     getProdutos();
@@ -45,23 +39,6 @@ export default function Produtos({
       });
   }
 
-  const insertProduto = (nome,quantidade,preco) => {
-   const produto = {
-     nome: nome,
-     quantidadeEmEstoque: quantidade,
-     preco: preco,
-     descricao: "",
-   };
-   api.post('/produtos',produto)
-      .then(
-        (response) => {
-          setProdutos([...produtos,produto]);
-          Alert.alert('Produto adicionado!')
-        }).catch((error) => {
-          Alert.alert('Falha ao adicionar produto!')
-      });
-  }
-
   const modalRef = useRef(null);
   const onOpen = () => {
     const modal = modalRef.current;
@@ -73,9 +50,12 @@ export default function Produtos({
 
   return ( 
     <View style={{marginTop:30,flex:1,alignItems:'center',justifyContent:'center'}}>
-       <TouchableOpacity style={styles.button2} onPress={onOpen}>
-       <Text style={{color:'#002035',fontSize:18,textAlign:'center'}}> Adicionar produto </Text>
-         </TouchableOpacity>
+    <FAB
+        style={styles.fab}
+        icon="plus"
+        color='white'
+        onPress={onOpen}
+    />
     <ScrollView> 
       
      {produtos.map(
@@ -92,19 +72,19 @@ export default function Produtos({
       <Modalize style={styles.container} ref={modalRef}> 
       <View style={styles.modal}>
       <View style={styles.categoria}>
-        <Text style={styles.tipoDeDado}><Entypo name="calendar" size={15} color="#6b6b6b" /> Nome </Text>
+        <Text style={styles.tipoDeDado}><Entypo name="price-tag" size={15} color="#6b6b6b" /> Nome </Text>
         <TextInput onTextChange={(texto)=> setNome(texto) } style={styles.dados}/>
       </View>
       <View style={styles.categoria}>
-        <Text style={styles.tipoDeDado}><Entypo name="calendar" size={15} color="#6b6b6b" /> Quantidade </Text>
+        <Text style={styles.tipoDeDado}><FontAwesome5 name="shopping-basket" size={15} color="#6b6b6b" /> Quantidade </Text>
         <TextInput keyboardType = 'numeric' onTextChange={(texto)=> setQuantidade(texto) } style={styles.dados}/>
       </View>
       <View style={styles.categoria}>
-        <Text style={styles.tipoDeDado}><Entypo name="calendar" size={15} color="#6b6b6b" /> Preço </Text>
+        <Text style={styles.tipoDeDado}><FontAwesome5 name="money-bill-wave" size={15} color="#6b6b6b" /> Preço </Text>
         <TextInput keyboardType = 'numeric' onTextChange={(texto)=> setPreco(texto) } style={styles.dados}/>
       </View>
       <View style={styles.categoria}>
-        <Text style={styles.tipoDeDado}><Entypo name="calendar" size={15} color="#6b6b6b" /> Descrição </Text>
+        <Text style={styles.tipoDeDado}><SimpleLineIcons name="note" size={15} color="#6b6b6b" /> Descrição </Text>
         <TextInput onTextChange={(texto)=> setDescricao(texto) } style={styles.dados}/>
       </View>
         <TouchableOpacity style={styles.button2} onPress={() => insertProduto(nome,quantidade,preco)}>
@@ -176,5 +156,12 @@ export default function Produtos({
         borderBottomColor: '#cfcfcf',
         borderBottomWidth: 1,
         marginBottom: 5
-      }
+      },
+      fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
+        backgroundColor:'#1da1f3'
+      },
 });

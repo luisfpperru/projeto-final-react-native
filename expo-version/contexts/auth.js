@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
+import { Alert } from 'react-native';
 
 const AuthContext = createContext({
   usuarioLogado: false,
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }) => {
       AsyncStorage.setItem('@usuario', JSON.stringify(response.data.cliente));
       AsyncStorage.setItem('@token', response.data.token);
       api.defaults.headers.Authorization = response.data.token;
-    })
+    }).catch(()=> Alert.alert('Usuário não foi encontrado!'));
   }
 
   function Logout() {

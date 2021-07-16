@@ -7,8 +7,8 @@ import {useAuth} from '../contexts/auth';
 export default function Routes(){
   
   const { usuarioLogado, loading } = useAuth();
-  // if (loading) {
-  //   return <Loading/>;
-  // }
+  if (loading) {
+    return <Loading/>;
+  }
   return (usuarioLogado ? <AppRoutes /> : <AuthRoutes/>);
 };

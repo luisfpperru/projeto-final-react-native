@@ -15,6 +15,7 @@ export default function App (){
 
   return (
     <View>
+      
       <TouchableOpacity onPress={onOpen}>
         <Text>Open the modal</Text>
       </TouchableOpacity>
