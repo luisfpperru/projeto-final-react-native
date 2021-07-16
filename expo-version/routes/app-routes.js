@@ -1,16 +1,17 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MeuPerfil from '../screens/MeuPerfil';
-import Login from '../screens/Login'
+import TelaLogin from '../screens/TelaLogin'
 import TelaInicial from '../screens/TelaInicial'
 import Produtos from '../screens/Produtos'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Entypo } from '@expo/vector-icons'; 
-
+import {useAuth} from '../contexts/auth'
 
 const Tab = createBottomTabNavigator();
 
 export default function AppRoutes() {
+ 
   return (
     <Tab.Navigator tabBarOptions={
       {
@@ -22,13 +23,6 @@ export default function AppRoutes() {
 	    }}
   
       >
-      <Tab.Screen name='Login' component={Login} options={{
-          tabBarLabel: 'login',
-          tabBarIcon: ({ color, size }) => (
-            <Entypo name="login" size={size} color={color} />
-          ),
-        }}
-      />
       <Tab.Screen name='TelaInicial' component={TelaInicial} options={{
           tabBarLabel: 'home',
           tabBarIcon: ({ color, size }) => (
@@ -48,6 +42,13 @@ export default function AppRoutes() {
           tabBarLabel: 'produtos',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="cart" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen name='Logout' component={TelaLogin} options={{
+          tabBarLabel: 'logout',
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="login" size={size} color={color} />
           ),
         }}
       />

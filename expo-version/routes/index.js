@@ -2,11 +2,13 @@ import React from 'react';
 import AppRoutes from './app-routes';
 import AuthRoutes from './auth-routes';
 import Loading from '../screens/Loading';
+import {useAuth} from '../contexts/auth';
 
-const Routes = () => {
-  return <AppRoutes/>;
-  {//return signed ? <AppRoutes /> : <AuthRoutes/>;
-  }
+export default function Routes(){
+  
+  const { usuarioLogado, loading } = useAuth();
+  // if (loading) {
+  //   return <Loading/>;
+  // }
+  return (usuarioLogado ? <AppRoutes /> : <AuthRoutes/>);
 };
-
-export default Routes;

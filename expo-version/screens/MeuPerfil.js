@@ -2,16 +2,18 @@ import React, {useState,useEffect} from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons, Entypo, Foundation   } from '@expo/vector-icons'; 
 import api from '../services/api';
+import {useAuth} from '../contexts/auth'
 
 export default function MeuPerfil({navigation}){
   const [cliente, setCliente] = useState([]);
+  const { usuario} = useAuth();
 
   useEffect(() => {
     getCliente();
   }, []);
 
   const getCliente = () => {
-    api.get('/clientes/id/5')
+    api.get(`/clientes/id/${usuario.id}`)
       .then(
         (response) => {
           setCliente(response.data);
@@ -47,7 +49,7 @@ export default function MeuPerfil({navigation}){
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="calendar" size={15} color="#6b6b6b" /> Data de Nascimento</Text>
-        <Text style={styles.dados}>{cliente.dataDeNascimento.substring(0,10)}</Text>
+        <Text style={styles.dados}>{cliente.dataDeNascimento}</Text>
       </View>
       {/* <Button title="Ir para Home" onPress={()=> navigation.navigate('TelaInicial')}/> */}
       <TouchableOpacity style={styles.button2} onPress={()=> navigation.navigate('Home')}>

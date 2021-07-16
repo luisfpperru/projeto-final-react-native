@@ -1,7 +1,14 @@
 import React from 'react';
 import { Text, View, Image, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
+import {useAuth} from '../contexts/auth'
 
 export default function TelaInicial({navigation}){
+
+  const {Logout} = useAuth();
+  const handleLogout = () =>{
+    Logout();
+  }
+
   return(
     <View style={styles.container} >
         <ImageBackground source={require('../assets/splash-screen.png')} style={styles.imagem} resizeMode="cover">
@@ -9,12 +16,12 @@ export default function TelaInicial({navigation}){
         <Text style={styles.texto}>A loja numero 1 dos ratões da tecnologia!</Text>
         <Text style={styles.texto}>Promoções todos os dias</Text>
         <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('Login')}>
-        <Text style={{color:'white',fontSize:18,textAlign:'center'}}> login </Text>
+        <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('Produtos')}>
+        <Text style={{color:'white',fontSize:18,textAlign:'center'}}> Ver Ofertas  </Text>
       </TouchableOpacity>
 
-       <TouchableOpacity style={styles.button2} onPress={()=> navigation.navigate('Home')}>
-        <Text style={{color:'#002035',fontSize:18,textAlign:'center'}}> cadastrar-se </Text>
+      <TouchableOpacity style={styles.button2} onPress={handleLogout}>
+      <Text style={{color:'#002035',fontSize:18,textAlign:'center'}}> logout </Text>
       </TouchableOpacity>
       </View>
     </ImageBackground>

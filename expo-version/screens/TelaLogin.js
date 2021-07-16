@@ -1,11 +1,18 @@
-import React, {useEffect,useRef} from 'react';
+import React, {useState,useEffect,useRef} from 'react';
 import { Text, View, Image,StyleSheet, TextInput,TouchableOpacity } from 'react-native';
-import { useForm } from 'react-hook-form';
-import * as yup from "yup";
 import { Modalize } from 'react-native-modalize';
 import { Ionicons, Entypo, Foundation   } from '@expo/vector-icons'; 
+import {useAuth} from '../contexts/auth'
 
-export default function Login({navigation}){
+export default function TelaLogin({navigation}){
+
+  const [email,setEmail] = useState('');
+  const [senha,setSenha] = useState('');
+
+  const { Login } = useAuth();
+  const handleLogin = () =>{
+    Login(email,senha);
+  }
 
   const modalRef = useRef(null);
   const onOpen = () => {
@@ -14,44 +21,22 @@ export default function Login({navigation}){
       modal.open();
     }
   };
-
-  const { register, setValue, handleSubmit, error } = useForm({ validationSchema: fieldsValidationSchema })
-
-  useEffect(() => {
-    register('email')
-    register('senha')
-  }, [register]);
-
-  const onSubmit = (data) => alert("Usuário com email"+data.email+" cadastrado!")
-
-  const fieldsValidationSchema = yup.object().shape({
-    email: yup
-    .string()
-    .required('O email não pode ser vazio')
-    .email('Digite um email válido'),
-    senha: yup
-    .string()
-    .required('A senha não pode ser vazia')
-    .min(6, 'A senha deve conter pelo menos 6 dígitos')
-  })
-
+  
   return(
     <View style={styles.container}>
       <Image source={require('../assets/logo.png')} style={styles.logo}/>
       <TextInput 
       style={styles.campo} 
       placeholder='email'
-      error={error?.email}
-      onChangeText={texto => setValue('email', texto)}
+      onChangeText={(texto) => setEmail(texto)}
       />
       <TextInput 
       style={styles.campo} 
       placeholder='senha'
-      error={error?.senha}
-      onChangeText={texto => setValue('senha', texto)}
+      onChangeText={(texto) => setSenha(texto)}
       secureTextEntry/>
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={{color:'white',fontSize:18,textAlign:'center'}}> login </Text>
       </TouchableOpacity>
 
