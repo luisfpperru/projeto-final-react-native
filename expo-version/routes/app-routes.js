@@ -4,6 +4,7 @@ import MeuPerfil from '../screens/MeuPerfil';
 import TelaLogin from '../screens/TelaLogin'
 import TelaInicial from '../screens/TelaInicial'
 import Produtos from '../screens/Produtos'
+import Logout from '../screens/Logout'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Entypo } from '@expo/vector-icons'; 
 import {useAuth} from '../contexts/auth'
@@ -45,7 +46,7 @@ export default function AppRoutes() {
           ),
         }}
       />
-      <Tab.Screen name='Logout' component={TelaLogin} options={{
+      <Tab.Screen name='Logout' component={Logout} options={{
           tabBarLabel: 'logout',
           tabBarIcon: ({ color, size }) => (
             <Entypo name="login" size={size} color={color} />

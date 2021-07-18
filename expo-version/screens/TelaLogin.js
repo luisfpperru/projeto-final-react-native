@@ -1,17 +1,16 @@
 import React, {useState,useEffect,useRef} from 'react';
-import { Text, View, Image,StyleSheet, TextInput,TouchableOpacity } from 'react-native';
+import { Text, View, Image,StyleSheet, TextInput,TouchableOpacity, Alert } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Ionicons, Entypo, Foundation   } from '@expo/vector-icons'; 
 import {useAuth} from '../contexts/auth'
+import api from '../services/api'
 
 export default function TelaLogin({navigation}){
 
   const [email,setEmail] = useState('');
   const [senha,setSenha] = useState('');
   const [nome,setNome] = useState('');
-  const [telefone,setTelefone] = useState('');
   const [cpf,setCpf] = useState('');
-  const [nascimento,setNascimento] = useState('');
 
   const { Login } = useAuth();
   const handleLogin = () =>{
@@ -19,6 +18,8 @@ export default function TelaLogin({navigation}){
   }
 
   const criarCadastro = () => {
+    let cliente={email,senha,nome,cpfOuCnpj:cpf};
+    console.log(cliente);
     api.post('/clientes',cliente)
        .then(
          (response) => {
@@ -30,10 +31,12 @@ export default function TelaLogin({navigation}){
 
   const modalRef = useRef(null);
   const onOpen = () => {
-    const modal = modalRef.current;
-    if (modal) {
-      modal.open();
-    }
+    modalRef.current?.open();
+  };
+
+  const onClose = () => {
+    criarCadastro();
+    modalRef.current?.close();
   };
   
   return(
@@ -62,21 +65,21 @@ export default function TelaLogin({navigation}){
       <View style={styles.modal}>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Ionicons name="person" size={15} color="#6b6b6b" /> Nome</Text>
-        <TextInput placeholder='Nome' style={styles.dados}/>
+        <TextInput onChangeText={(texto)=> setNome(texto)} placeholder='Nome' style={styles.dados}/>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="email" size={15} color="#6b6b6b" /> Email</Text>
-        <TextInput placeholder='usuario@email.com' style={styles.dados}/>
+        <TextInput onChangeText={(texto)=> setEmail(texto)} placeholder='usuario@email.com' style={styles.dados}/>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="text-document-inverted" size={15} color="#6b6b6b" /> CPF</Text>
-        <TextInput keyboardType = 'numeric' placeholder='000.000.000-00' style={styles.dados}/>
+        <TextInput onChangeText={(texto)=> setCpf(texto)} keyboardType = 'numeric' placeholder='000.000.000-00' style={styles.dados}/>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="lock" size={15} color="#6b6b6b" /> Senha </Text>
-        <TextInput placeholder='senha' style={styles.dados}/>
+        <TextInput secureTextEntry onChangeText={(texto)=> setSenha(texto)} placeholder='senha' style={styles.dados}/>
       </View>
-      <TouchableOpacity style={styles.button2} onPress={()=> {}}>
+      <TouchableOpacity style={styles.button2} onPress={onClose}>
         <Text style={{color:'#002035',fontSize:18,textAlign:'center'}}> Criar conta </Text>
       </TouchableOpacity>
         </View>

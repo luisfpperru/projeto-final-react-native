@@ -3,7 +3,7 @@ import {StyleSheet,TouchableOpacity} from 'react-native';
 import { Text, View, Image } from 'react-native';
 import { Entypo,FontAwesome5} from '@expo/vector-icons'; 
 
-export default function Produto({nome,quantidade,preco,onPress}){
+export default function Produto({nome,quantidade,preco,onPress,onPressModal}){
   return(
     <View style={styles.pagina}>
       <View  style={styles.container}>
@@ -20,6 +20,12 @@ export default function Produto({nome,quantidade,preco,onPress}){
           <Text style={styles.preco}>R$ {preco}</Text>
         </View>
         <View style={styles.flex}>
+          <TouchableOpacity onPress={onPress} style={{paddingHorizontal:20}}>
+              <FontAwesome5 name="trash" size={24} color="#bf1408"/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onPressModal} style={{paddingHorizontal:20}}>
+              <Entypo name="edit" size={24} color="black"/>
+            </TouchableOpacity>
         </View>
       </View>
     </View>

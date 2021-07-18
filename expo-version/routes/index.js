@@ -10,5 +10,7 @@ export default function Routes(){
   if (loading) {
     return <Loading/>;
   }
+  {//return (<AppRoutes />);
+  }
   return (usuarioLogado ? <AppRoutes /> : <AuthRoutes/>);
 };
