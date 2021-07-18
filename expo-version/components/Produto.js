@@ -1,8 +1,9 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet,TouchableOpacity} from 'react-native';
 import { Text, View, Image } from 'react-native';
+import { Entypo,FontAwesome5} from '@expo/vector-icons'; 
 
-export default function Produto({nome,quantidade,preco}){
+export default function Produto({nome,quantidade,preco,onPress}){
   return(
     <View style={styles.pagina}>
       <View  style={styles.container}>
@@ -17,6 +18,8 @@ export default function Produto({nome,quantidade,preco}){
         <View style={styles.detailsProduto}>
           <Text style={styles.quantidade}>Em Estoque : {quantidade}</Text>
           <Text style={styles.preco}>R$ {preco}</Text>
+        </View>
+        <View style={styles.flex}>
         </View>
       </View>
     </View>
@@ -77,6 +80,11 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderColor: '#002035',
     backgroundColor: '#002035'
+  },
+  flex:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    flexWrap: 'wrap',
+    alignSelf: 'center',
   }
-
 });

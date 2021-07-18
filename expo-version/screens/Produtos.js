@@ -15,7 +15,7 @@ import {
 import Produto from '../components/Produto';
 import api from '../services/api'
 import { Modalize } from 'react-native-modalize';
-import { Entypo, Foundation,FontAwesome5,SimpleLineIcons } from '@expo/vector-icons'; 
+import { Entypo,FontAwesome5,SimpleLineIcons } from '@expo/vector-icons'; 
 import { FAB } from 'react-native-paper';
 
 
@@ -25,26 +25,73 @@ export default function Produtos({
 
   const [produtos, setProdutos] = useState([]);
 
+  const [nome,setNome] = useState('');
+  const [quantidadeEmEstoque,setQuantidadeEmEstoque] = useState('');
+  const [preco,setPreco] = useState('');
+  const [descricao,setDescricao] = useState('');
+
   useEffect(() => {
     getProdutos();
   }, []);
 
-  const getProdutos = () => {
-    api.get('/produtos')
+  const getProdutos =  () => {
+     api.get('/produtos')
       .then(
         (response) => {
           setProdutos(response.data);
         }).catch((error) => {
-        console.log(error);
-      });
+          Alert.alert('Falha ao carregar os produtos!')
+        });
   }
+
+  const insertProduto = () => {
+    let produto = {nome,descricao,preco,quantidadeEmEstoque};
+    api.post('/produtos',produto)
+       .then( () => {
+           console.log(produto);
+           Alert.alert('Produto adicionado!');
+           setProdutos([...produtos,produto])
+       }).catch( error => {
+           Alert.alert('Falha ao adicionar produto!')
+       });
+   }
+
+   const editarProduto = (produtoId) => {
+    let produto = {nome,descricao,preco,quantidadeEmEstoque};
+    api.put(`/produtos/id/${produtoId}`,produto)
+       .then(
+         (response) => {
+           Alert.alert('Produto editado!')
+           produtos.filter(()=> produto.id == produtoId)
+         }).catch((error) => {
+           Alert.alert('Falha ao editar o produto!')
+       });
+   }
+
+   const deletarProduto = (produtoId) => {
+     
+    api.delete(`/produtos/id/${produtoId}`)
+       .then(
+         (response) => {
+           Alert.alert('Produto deletado!')
+           setProdutos(produtos.filter( (produto) => produto.id !== produtoId));
+         }).catch((error) => {
+           Alert.alert('Produto não pode ser deletado')
+           console.log(error);
+       });
+   }
 
   const modalRef = useRef(null);
   const onOpen = () => {
-    const modal = modalRef.current;
+    let modal = modalRef.current;
     if (modal) {
       modal.open();
     }
+  };
+
+  const modalRefDescricao = useRef(null);
+  const onOpenDescricao = () => {
+      modalRefDescricao.current?.open();
   };
 
 
@@ -60,11 +107,19 @@ export default function Produtos({
       
      {produtos.map(
           (produto) => (
+            <>
             <Produto
             nome = {produto.nome}
             preco = {produto.preco.toString()}
             quantidade = {produto.quantidadeEmEstoque.toString()}
             />
+            <TouchableOpacity onPress={() => deletarProduto(produto.id)}>
+              <FontAwesome5 name="trash" size={24} color="red"/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => onOpenDescricao}>
+              <Entypo name="edit" size={24} color="black"/>
+            </TouchableOpacity>
+            </>
           ))
       } 
       </ScrollView> 
@@ -73,22 +128,46 @@ export default function Produtos({
       <View style={styles.modal}>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="price-tag" size={15} color="#6b6b6b" /> Nome </Text>
-        <TextInput onTextChange={(texto)=> setNome(texto) } style={styles.dados}/>
+        <TextInput onChangeText={(texto)=> setNome(texto) } style={styles.dados}/>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><FontAwesome5 name="shopping-basket" size={15} color="#6b6b6b" /> Quantidade </Text>
-        <TextInput keyboardType = 'numeric' onTextChange={(texto)=> setQuantidade(texto) } style={styles.dados}/>
+        <TextInput keyboardType = 'numeric' onChangeText={(texto)=> setQuantidadeEmEstoque(texto) } style={styles.dados}/>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><FontAwesome5 name="money-bill-wave" size={15} color="#6b6b6b" /> Preço </Text>
-        <TextInput keyboardType = 'numeric' onTextChange={(texto)=> setPreco(texto) } style={styles.dados}/>
+        <TextInput keyboardType = 'numeric' onChangeText={(texto)=> setPreco(texto) } style={styles.dados}/>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><SimpleLineIcons name="note" size={15} color="#6b6b6b" /> Descrição </Text>
-        <TextInput onTextChange={(texto)=> setDescricao(texto) } style={styles.dados}/>
+        <TextInput onChangeText={(texto)=> setDescricao(texto) } style={styles.dados}/>
       </View>
-        <TouchableOpacity style={styles.button2} onPress={() => insertProduto(nome,quantidade,preco)}>
+        <TouchableOpacity style={styles.button2} onPress={insertProduto}>
         <Text style={{color:'#002035',fontSize:18,textAlign:'center'}}> Adicionar </Text>
+        </TouchableOpacity>
+      </View>
+      </Modalize>
+
+      <Modalize style={styles.container} ref={modalRefDescricao}> 
+      <View style={styles.modal}>
+      <View style={styles.categoria}>
+        <Text style={styles.tipoDeDado}><Entypo name="price-tag" size={15} color="#6b6b6b" /> Nome </Text>
+        <TextInput onChangeText={(texto)=> setNome(texto) } style={styles.dados}/>
+      </View>
+      <View style={styles.categoria}>
+        <Text style={styles.tipoDeDado}><FontAwesome5 name="shopping-basket" size={15} color="#6b6b6b" /> Quantidade </Text>
+        <TextInput keyboardType = 'numeric' onChangeText={(texto)=> setQuantidadeEmEstoque(texto) } style={styles.dados}/>
+      </View>
+      <View style={styles.categoria}>
+        <Text style={styles.tipoDeDado}><FontAwesome5 name="money-bill-wave" size={15} color="#6b6b6b" /> Preço </Text>
+        <TextInput keyboardType = 'numeric' onChangeText={(texto)=> setPreco(texto) } style={styles.dados}/>
+      </View>
+      <View style={styles.categoria}>
+        <Text style={styles.tipoDeDado}><SimpleLineIcons name="note" size={15} color="#6b6b6b" /> Descrição </Text>
+        <TextInput onChangeText={(texto)=> setDescricao(texto) } style={styles.dados}/>
+      </View>
+        <TouchableOpacity style={styles.button2} onPress={() => editarProduto(produto.id)}>
+        <Text style={{color:'#002035',fontSize:18,textAlign:'center'}}> Atualizar </Text>
         </TouchableOpacity>
       </View>
       </Modalize>

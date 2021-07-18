@@ -8,11 +8,25 @@ export default function TelaLogin({navigation}){
 
   const [email,setEmail] = useState('');
   const [senha,setSenha] = useState('');
+  const [nome,setNome] = useState('');
+  const [telefone,setTelefone] = useState('');
+  const [cpf,setCpf] = useState('');
+  const [nascimento,setNascimento] = useState('');
 
   const { Login } = useAuth();
   const handleLogin = () =>{
     Login(email,senha);
   }
+
+  const criarCadastro = () => {
+    api.post('/clientes',cliente)
+       .then(
+         (response) => {
+           Alert.alert('Cadastro concluido!')
+         }).catch((error) => {
+           Alert.alert('Cadastro não pode ser realizado')
+       });
+   }
 
   const modalRef = useRef(null);
   const onOpen = () => {
@@ -51,16 +65,6 @@ export default function TelaLogin({navigation}){
         <TextInput placeholder='Nome' style={styles.dados}/>
       </View>
       <View style={styles.categoria}>
-        <Text style={styles.tipoDeDado}><Entypo name="address" size={15} color="#6b6b6b" /> Endereço</Text>
-        <TextInput placeholder='Rua, Numero, Complemento, Bairro, Cidade, Estado' style={styles.dados}/>
-          {//`${cliente.endereco.rua}, ${cliente.endereco.numero}, ${cliente.endereco.bairro}, ${cliente.endereco.cidade}, ${cliente.endereco.estado}`
-          }
-      </View>
-      <View style={styles.categoria}>
-        <Text style={styles.tipoDeDado}><Foundation name="telephone" size={15} color="#6b6b6b" /> Telefone</Text>
-        <TextInput keyboardType = 'numeric' placeholder='(00) 00000-0000' style={styles.dados}/>
-      </View>
-      <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="email" size={15} color="#6b6b6b" /> Email</Text>
         <TextInput placeholder='usuario@email.com' style={styles.dados}/>
       </View>
@@ -69,14 +73,13 @@ export default function TelaLogin({navigation}){
         <TextInput keyboardType = 'numeric' placeholder='000.000.000-00' style={styles.dados}/>
       </View>
       <View style={styles.categoria}>
-        <Text style={styles.tipoDeDado}><Entypo name="calendar" size={15} color="#6b6b6b" /> Data de Nascimento</Text>
-        <TextInput keyboardType = 'numeric' placeholder='dia/mes/ano' style={styles.dados}/>
+        <Text style={styles.tipoDeDado}><Entypo name="lock" size={15} color="#6b6b6b" /> Senha </Text>
+        <TextInput placeholder='senha' style={styles.dados}/>
       </View>
-      {/* <Button title="Ir para Home" onPress={()=> navigation.navigate('TelaInicial')}/> */}
-      <TouchableOpacity style={styles.button2} onPress={()=> navigation.navigate('Home')}>
+      <TouchableOpacity style={styles.button2} onPress={()=> {}}>
         <Text style={{color:'#002035',fontSize:18,textAlign:'center'}}> Criar conta </Text>
       </TouchableOpacity>
-    </View>
+        </View>
       </Modalize>
     </View>
   )

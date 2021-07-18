@@ -1,12 +1,12 @@
 import React, {useState,useEffect} from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { Ionicons, Entypo, Foundation   } from '@expo/vector-icons'; 
 import api from '../services/api';
 import {useAuth} from '../contexts/auth'
 
 export default function MeuPerfil({navigation}){
   const [cliente, setCliente] = useState([]);
-  const { usuario} = useAuth();
+  const { usuario,Logout} = useAuth();
 
   useEffect(() => {
     getCliente();
@@ -22,43 +22,56 @@ export default function MeuPerfil({navigation}){
       });
   }
 
+  const editarCliente = () => {
+    api.put(`/clientes/id/${usuario.id}`,cliente)
+      .then(
+        (response) => {
+          Alert.alert("Dados do Cliente foram editados!");
+        }).catch((error) => {
+        Alert.alert("Dados do Cliente não puderam ser editados!");
+      });
+  }
+
+  const deletarCliente = () => {
+    api.delete(`/clientes/id/${usuario.id}`)
+      .then(
+        (response) => {
+          Alert.alert("A conta do Cliente foi excluida!");
+          Logout();
+        }).catch((error) => {
+        Alert.alert("Dados do Cliente não foram excluidos!");
+      });
+  }
+
   return(
     <View style={styles.container}>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Ionicons name="person" size={15} color="#6b6b6b" /> Nome</Text>
-        <Text style={styles.dados}>{cliente.nome}</Text>
-      </View>
-      <View style={styles.categoria}>
-        <Text style={styles.tipoDeDado}><Entypo name="address" size={15} color="#6b6b6b" /> Endereço</Text>
-        <Text style={styles.dados}>
-          {//`${cliente.endereco.rua}, ${cliente.endereco.numero}, ${cliente.endereco.bairro}, ${cliente.endereco.cidade}, ${cliente.endereco.estado}`
-          }
-        </Text>
-      </View>
-      <View style={styles.categoria}>
-        <Text style={styles.tipoDeDado}><Foundation name="telephone" size={15} color="#6b6b6b" /> Telefone</Text>
-        <Text style={styles.dados}>{cliente.telefone}</Text>
+        <TextInput style={styles.dados}>{cliente.nome}</TextInput>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="email" size={15} color="#6b6b6b" /> email</Text>
-        <Text style={styles.dados}>{cliente.email}</Text>
+        <TextInput style={styles.dados}>{cliente.email}</TextInput>
       </View>
       <View style={styles.categoria}>
         <Text style={styles.tipoDeDado}><Entypo name="text-document-inverted" size={15} color="#6b6b6b" /> CPF</Text>
-        <Text style={styles.dados}>{cliente.cpfOuCnpj}</Text>
+        <TextInput 
+          keyboardType = 'numeric' 
+          style={styles.dados}
+          onChangeText={()=>{}}
+          >
+          {cliente.cpfOuCnpj}
+        </TextInput>
       </View>
-      <View style={styles.categoria}>
-        <Text style={styles.tipoDeDado}><Entypo name="calendar" size={15} color="#6b6b6b" /> Data de Nascimento</Text>
-        <Text style={styles.dados}>{cliente.dataDeNascimento}</Text>
-      </View>
-      {/* <Button title="Ir para Home" onPress={()=> navigation.navigate('TelaInicial')}/> */}
-      <TouchableOpacity style={styles.button2} onPress={()=> navigation.navigate('Home')}>
+      <TouchableOpacity style={styles.button} onPress={()=> editarCliente()}>
         <Text style={{color:'#002035',fontSize:18,textAlign:'center'}}> editar dados </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button2} onPress={()=> deletarCliente()}>
+        <Text style={{color:'#002035',fontSize:18,textAlign:'center'}}> deletar conta </Text>
       </TouchableOpacity>
     </View>
   )
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -75,14 +88,24 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontSize: 25
   },
-  button2:{
+  button:{
     borderRadius:20,
     borderWidth:2,
     backgroundColor:'#1da1f3',
     width:180,
     padding:5,
     textAlign:'center',
-    margin:20,
+    margin:10,
+    alignSelf: 'center'
+  },
+  button2:{
+    borderRadius:20,
+    borderWidth:2,
+    backgroundColor:'red',
+    width:180,
+    padding:5,
+    textAlign:'center',
+    margin:10,
     alignSelf: 'center'
   },
   categoria: {

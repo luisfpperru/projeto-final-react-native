@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     CarregarDados();
   }, []);
 
-  async function Login(email,senha) {
+  function Login(email,senha) {
     api.post('/login', {email,senha})
     .then((response)=> {
       setUsuario(response.data.cliente);
@@ -40,10 +40,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   function Logout() {
-    AsyncStorage.clear().then(() => {
+    AsyncStorage.multiRemove(['@usuario','@token']).then(() => {
       setUsuario(null);
-      AsyncStorage.removeItem('@usuario');
-      AsyncStorage.removeItem('@token');
+      {//AsyncStorage.multiRemove(["@token","@usuario"])
+      }
     });
   }
 
